@@ -1,5 +1,7 @@
 package org.jdbc.plus.rules.rule;
 
+import com.mysql.cj.log.Log;
+
 import org.jdbc.plus.rules.pojo.Type;
 import org.jdbc.plus.rules.whereType.WhereType;
 
@@ -26,9 +28,9 @@ public class Eq {
      * @param value
      * @return
      */
-    public Eq eq(String column, Object value) {
+    public Logic eq(String column, Object value) {
         this.logic.paramLogic.put(column, new Type().setValue(value).setType(WhereType.EQ));
-        return this;
+        return this.logic;
     }
 
 }
