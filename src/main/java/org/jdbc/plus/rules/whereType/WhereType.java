@@ -6,6 +6,6 @@ package org.jdbc.plus.rules.whereType;
  *         逻辑类型
  */
 public enum WhereType {
-    // = lt gt noeq or limit
+    // = lt gt noeq limit
     EQ(), LT(), GT(), NOEQ(), LIMIT();
 }

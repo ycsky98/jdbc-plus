@@ -3,7 +3,6 @@ package org.jdbc.plus.rules.build;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.jdbc.plus.rules.pojo.Type;
@@ -21,11 +20,11 @@ public class SqlWhereBuild {
      * 根据逻辑构建sql
      * 
      * @param logic
-     * @return {@link java.lang.StringBuffer}
+     * @return {@link java.sql.PreparedStatement}
      * 
      * @throws {@link java.sql.SQLException}
      */
-    public StringBuffer sqlBuild(String befsql, Logic logic, Connection connection) throws SQLException {
+    public PreparedStatement sqlBuild(String befsql, Logic logic, Connection connection) throws SQLException {
         StringBuffer sql = new StringBuffer();
         // 获取构建好的条件值
         Map<String, Type> valueType = logic.buildParam();
@@ -69,7 +68,7 @@ public class SqlWhereBuild {
         } else {// 没有任何逻辑执行原sql
             preparedStatement = connection.prepareStatement(befsql);
         }
-        return sql;
+        return preparedStatement;
     }
 
     /**
