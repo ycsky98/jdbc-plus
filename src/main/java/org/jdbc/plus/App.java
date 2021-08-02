@@ -16,6 +16,7 @@ public class App {
         HikariConfig hikariConfig = new HikariConfig();
 
         SqlWhereBuild build = new SqlWhereBuild();
-        build.sqlBuild("SELECT * FROM admin", new Logic().eq("column", 1).eq("column2", 2), null);
+        build.sqlBuild("SELECT * FROM admin", new Logic().eq("column", 1).eq("column2", 2).limit(0, 10).buildParam(),
+                null);
     }
 }

@@ -41,6 +41,11 @@ public class Logic {
         return new Lt(this);
     }
 
+    public Limit limit(Integer start, Integer end) {
+        this.paramLogic.put("&LIMIT&", new Type().setType(WhereType.LIMIT).setValue(start + "&" + end));
+        return new Limit(this);
+    }
+
     /**
      * 返回条件数据
      * 
