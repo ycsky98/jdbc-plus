@@ -7,5 +7,20 @@ package org.jdbc.plus.rules.whereType;
  */
 public enum WhereType {
     // = lt gt noeq limit
-    EQ(), LT(), GT(), NOEQ(), LIMIT();
+    EQ(" = "), LT(" < "), GT(" > "), NOEQ(" != "), LIMIT(" LIMIT ");
+
+    private String symbol;
+
+    private WhereType(String symbol) {
+        this.symbol = symbol;
+    }
+
+    public String getSymbol() {
+        return symbol;
+    }
+
+    public void setSymbol(String symbol) {
+        this.symbol = symbol;
+    }
+
 }

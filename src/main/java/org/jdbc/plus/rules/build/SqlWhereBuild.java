@@ -26,6 +26,7 @@ public class SqlWhereBuild {
      */
     public PreparedStatement sqlBuild(String befsql, Logic logic, Connection connection) throws SQLException {
         StringBuffer sql = new StringBuffer();
+        sql.append(befsql);
         // 获取构建好的条件值
         Map<String, Type> valueType = logic.buildParam();
         PreparedStatement preparedStatement = null;
@@ -38,20 +39,20 @@ public class SqlWhereBuild {
             for (Map.Entry<String, Type> entry : valueType.entrySet()) {
                 WhereType whereType = entry.getValue().getType();
                 switch (whereType) {
-                    case EQ:
-                        sql.append(entry.getKey()).append(" = ").append("?").append(" ");
+                    case EQ:// 等于
+                        sql.append(entry.getKey()).append(WhereType.EQ.getSymbol()).append("?").append(" ");
                         if (!checkEnd(count, size)) {
                             sql.append("AND ");
                         }
                         break;
-                    case LT:
-                        sql.append(entry.getKey()).append(" < ").append("?").append(" ");
+                    case LT:// 小于
+                        sql.append(entry.getKey()).append(WhereType.LT.getSymbol()).append("?").append(" ");
                         if (!checkEnd(count, size)) {
                             sql.append("AND ");
                         }
                         break;
-                    case GT:
-                        sql.append(entry.getKey()).append(" > ").append("?").append(" ");
+                    case GT:// 大于
+                        sql.append(entry.getKey()).append(WhereType.GT.getSymbol()).append("?").append(" ");
                         if (!checkEnd(count, size)) {
                             sql.append("AND ");
                         }
@@ -59,8 +60,9 @@ public class SqlWhereBuild {
                     default:
                         break;
                 }
+                count++;
             }
-            preparedStatement = connection.prepareStatement(befsql + sql.toString());
+            preparedStatement = connection.prepareStatement(sql.toString());
             count = 1;
             for (Map.Entry<String, Type> entry : valueType.entrySet()) {
                 preparedStatement.setObject(count, entry.getValue().getValue());
