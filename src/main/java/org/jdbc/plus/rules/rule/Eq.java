@@ -33,4 +33,13 @@ public class Eq {
         return this.logic;
     }
 
+    /**
+     * 结束
+     * 
+     * @return
+     */
+    public Logic end() {
+        return this.logic;
+    }
+
 }

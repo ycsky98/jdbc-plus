@@ -47,6 +47,15 @@ public class Logic {
     }
 
     /**
+     * 结束用语
+     * 
+     * @return
+     */
+    public Logic end() {
+        return this;
+    }
+
+    /**
      * 返回条件数据
      * 
      * @return

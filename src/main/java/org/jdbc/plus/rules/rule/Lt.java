@@ -20,4 +20,13 @@ public class Lt {
         this.logic.paramLogic.put(column, new Type().setValue(value).setType(WhereType.LT));
         return this.logic;
     }
+
+    /**
+     * 结束用语
+     * 
+     * @return
+     */
+    public Logic end() {
+        return this.logic;
+    }
 }

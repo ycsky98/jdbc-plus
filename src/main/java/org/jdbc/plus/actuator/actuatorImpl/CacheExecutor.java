@@ -18,6 +18,9 @@ public class CacheExecutor<T> extends BaseExecutor<T> {
         super(connection);
     }
 
+    public CacheExecutor() {
+    }
+
     // 待完成
 
 }

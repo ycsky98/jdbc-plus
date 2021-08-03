@@ -13,6 +13,15 @@ public class Limit {
     }
 
     /**
+     * 结束用语
+     * 
+     * @return
+     */
+    public Logic end() {
+        return this.logic;
+    }
+
+    /**
      * 返回条件数据
      * 
      * @return

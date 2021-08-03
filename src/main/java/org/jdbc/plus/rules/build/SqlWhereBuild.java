@@ -16,6 +16,12 @@ import org.jdbc.plus.rules.whereType.WhereType;
  */
 public class SqlWhereBuild {
 
+    private Connection connection;
+
+    public void setConnection(Connection connection) {
+        this.connection = connection;
+    }
+
     /**
      * 根据逻辑构建sql
      * 
@@ -24,7 +30,7 @@ public class SqlWhereBuild {
      * 
      * @throws {@link java.sql.SQLException}
      */
-    public PreparedStatement sqlBuild(String befsql, Logic logic, Connection connection) throws SQLException {
+    public PreparedStatement sqlBuild(String befsql, Logic logic) throws SQLException {
         StringBuffer sql = new StringBuffer();
         sql.append(befsql);
         // 获取构建好的条件值
@@ -59,6 +65,8 @@ public class SqlWhereBuild {
                         break;
                     case LIMIT:
                         // limit到末尾
+                        // 剔除上一次AND
+                        sql.replace(sql.lastIndexOf("AND"), sql.lastIndexOf("AND") + "AND ".length(), "");
                         String[] args = ((String) entry.getValue().getValue()).split("&");
                         sql.append(WhereType.LIMIT.getSymbol()).append(Integer.parseInt(args[0])).append(", ")
                                 .append(args[1]);
@@ -69,13 +77,13 @@ public class SqlWhereBuild {
                 }
                 count++;
             }
-            preparedStatement = connection.prepareStatement(sql.toString());
+            preparedStatement = this.connection.prepareStatement(sql.toString());
             count = 1;
             for (Map.Entry<String, Type> entry : valueType.entrySet()) {
                 preparedStatement.setObject(count, entry.getValue().getValue());
             }
         } else {// 没有任何逻辑执行原sql
-            preparedStatement = connection.prepareStatement(befsql);
+            preparedStatement = this.connection.prepareStatement(befsql);
         }
         return preparedStatement;
     }
@@ -88,8 +96,7 @@ public class SqlWhereBuild {
      * 
      * @throws {@link java.sql.SQLException}
      */
-    public PreparedStatement sqlBuild(String befsql, Map<String, Type> valueType, Connection connection)
-            throws SQLException {
+    public PreparedStatement sqlBuild(String befsql, Map<String, Type> valueType) throws SQLException {
         StringBuffer sql = new StringBuffer();
         sql.append(befsql);
         PreparedStatement preparedStatement = null;
@@ -134,13 +141,13 @@ public class SqlWhereBuild {
                 }
                 count++;
             }
-            preparedStatement = connection.prepareStatement(sql.toString());
+            preparedStatement = this.connection.prepareStatement(sql.toString());
             count = 1;
             for (Map.Entry<String, Type> entry : valueType.entrySet()) {
                 preparedStatement.setObject(count, entry.getValue().getValue());
             }
         } else {// 没有任何逻辑执行原sql
-            preparedStatement = connection.prepareStatement(befsql);
+            preparedStatement = this.connection.prepareStatement(befsql);
         }
         return preparedStatement;
     }
@@ -150,7 +157,7 @@ public class SqlWhereBuild {
      * 
      * @param count
      * @param size
-     * @return
+     * @return {@link java.lang.Boolean}
      */
     private boolean checkEnd(int count, int size) {
         return count == size;

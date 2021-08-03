@@ -32,6 +32,17 @@ public class BaseExecutor<T> implements Executor<T> {
         this.connection = connection;
     }
 
+    public BaseExecutor() {
+    }
+
+    public void setConnection(Connection connection) {
+        this.connection = connection;
+    }
+
+    public Connection getConnection() {
+        return this.connection;
+    }
+
     /**
      * 执行各种sql
      */
@@ -43,12 +54,16 @@ public class BaseExecutor<T> implements Executor<T> {
             // 如果是true直接提交
             if (commit) {
                 this.connection.commit();
-            } else {
-                // 数据回滚
-                this.connection.rollback();
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            // 出现异常,数据回滚
+            try {
+                this.connection.rollback();
+                flag = false;
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
         }
         return flag;
     }
@@ -85,17 +100,35 @@ public class BaseExecutor<T> implements Executor<T> {
                     try {
                         field.set(t, resultSet.getObject(field.getName()));
                     } catch (IllegalArgumentException | IllegalAccessException e) {
-                        // TODO Auto-generated catch block
                         e.printStackTrace();
                     }
                 }
             }
             return t;
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return null;
+    }
+
+    /**
+     * update语句执行器
+     */
+    @Override
+    public int executeUpdate(PreparedStatement preparedStatement, boolean commit) {
+        int count = 0;
+        try {
+            count = preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // 出现异常,数据回滚
+            try {
+                this.connection.rollback();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
+        }
+        return count;
     }
 
 }

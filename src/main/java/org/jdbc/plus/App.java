@@ -4,6 +4,7 @@ import java.sql.SQLException;
 
 import com.zaxxer.hikari.HikariConfig;
 
+import org.jdbc.plus.actuator.actuatorImpl.BusExecutor;
 import org.jdbc.plus.rules.build.SqlWhereBuild;
 import org.jdbc.plus.rules.rule.Logic;
 
@@ -14,9 +15,10 @@ import org.jdbc.plus.rules.rule.Logic;
 public class App {
     public static void main(String[] args) throws SQLException {
         HikariConfig hikariConfig = new HikariConfig();
-
         SqlWhereBuild build = new SqlWhereBuild();
-        build.sqlBuild("SELECT * FROM admin", new Logic().eq("column", 1).eq("column2", 2).limit(0, 10).buildParam(),
-                null);
+        BusExecutor<Integer> busExecutor = new BusExecutor<>(hikariConfig, build);
+
+        busExecutor.autoCommit(true);
+        busExecutor.execute("SELECT COUNT(1) FROM admin", new Logic().eq("username", "admin").end());
     }
 }

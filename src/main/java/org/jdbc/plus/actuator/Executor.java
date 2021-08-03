@@ -22,4 +22,13 @@ public interface Executor<T> {
      * @return
      */
     public T executeSelectOne(PreparedStatement preparedStatement, Class<T> class1);
+
+    /**
+     * 修改语句执行
+     * 
+     * @param preparedStatement
+     * @param commit
+     * @return
+     */
+    public int executeUpdate(PreparedStatement preparedStatement, boolean commit);
 }
