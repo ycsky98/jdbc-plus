@@ -9,6 +9,14 @@ jdbc-plus是一款原生插件
     ........
 ###以上是基本逻辑构造,其余返回值还是参照原生jdbc的做法,后续将陆续封装构建表模型;
 
+## 如何完整的使用该插件
+    HikariConfig hikariConfig = new HikariConfig();
+    SqlWhereBuild build = new SqlWhereBuild();
+    BusExecutor<Integer> busExecutor = new BusExecutor<>(hikariConfig, build);
+
+    busExecutor.autoCommit(true);
+    busExecutor.execute("SELECT COUNT(1) FROM admin", new Logic().eq("username", "admin").end());
+
 ##感谢各位大佬支持!
 
 ## 支持原生sql查询
