@@ -127,6 +127,18 @@ public class SqlWhereBuild {
                             sql.append("AND ");
                         }
                         break;
+                    case EGT:
+                        sql.append(entry.getKey()).append(WhereType.EGT.getSymbol()).append("?").append(" ");
+                        if (!checkEnd(count, size)) {
+                            sql.append("AND ");
+                        }
+                        break;
+                    case ELT:
+                        sql.append(entry.getKey()).append(WhereType.ELT.getSymbol()).append("?").append(" ");
+                        if (!checkEnd(count, size)) {
+                            sql.append("AND ");
+                        }
+                        break;
                     case LIMIT:
                         // limit到末尾
                         // 剔除上一次AND
