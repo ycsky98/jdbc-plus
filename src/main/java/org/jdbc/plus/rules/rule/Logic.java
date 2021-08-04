@@ -15,7 +15,7 @@ public class Logic {
     /**
      * 用于装取逻辑
      */
-    protected Map<String, Type> paramLogic = Collections.synchronizedMap(new LinkedHashMap<>(16));
+    protected volatile Map<String, Type> paramLogic = Collections.synchronizedMap(new LinkedHashMap<>(16));
 
     /**
      * 等于
