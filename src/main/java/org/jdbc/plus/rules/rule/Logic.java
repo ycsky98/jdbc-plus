@@ -41,6 +41,30 @@ public class Logic {
         return new Lt(this);
     }
 
+    /**
+     * 大于等于
+     * 
+     * @param column
+     * @param value
+     * @return
+     */
+    public Egt egt(String column, Object value) {
+        this.paramLogic.put(column, new Type().setValue(value).setType(WhereType.EGT));
+        return new Egt(this);
+    }
+
+    /**
+     * 小于等于
+     * 
+     * @param column
+     * @param value
+     * @return
+     */
+    public Elt elt(String column, Object value) {
+        this.paramLogic.put(column, new Type().setValue(value).setType(WhereType.ELT));
+        return new Elt(this);
+    }
+
     public Limit limit(Integer start, Integer end) {
         this.paramLogic.put("&LIMIT&", new Type().setType(WhereType.LIMIT).setValue(start + "&" + end));
         return new Limit(this);
