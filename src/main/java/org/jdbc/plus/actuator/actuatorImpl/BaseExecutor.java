@@ -93,12 +93,16 @@ public class BaseExecutor<T> implements Executor<T> {
                     | InvocationTargetException | NoSuchMethodException | SecurityException e) {
                 e.printStackTrace();
             }
+            Param param = null;
             if (resultSet.next()) {
-
                 for (Field field : fields) {
                     field.setAccessible(true);
                     try {
-                        field.set(t, resultSet.getObject(field.getName()));
+                        if (!"".equals((param = field.getAnnotation(Param.class)).name())) {
+                            field.set(t, resultSet.getObject(param.name()));
+                        } else {
+                            field.set(t, resultSet.getObject(field.getName()));
+                        }
                     } catch (IllegalArgumentException | IllegalAccessException e) {
                         e.printStackTrace();
                     }
