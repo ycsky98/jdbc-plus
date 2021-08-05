@@ -1,6 +1,5 @@
 package org.jdbc.plus.actuator.actuatorImpl;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 
 import com.zaxxer.hikari.HikariConfig;
@@ -70,7 +69,7 @@ public class BusExecutor<T> extends CacheExecutor<T> {
      * @param befSql
      * @param logic
      * @param bean
-     * @return
+     * @return T
      */
     public T executeSelectOne(String befSql, Logic logic, Class<T> bean) {
         T t = null;
@@ -83,7 +82,18 @@ public class BusExecutor<T> extends CacheExecutor<T> {
         return t;
     }
 
-    public int executeUpdate() {
-        return 0;
+    /**
+     * 执行DML语句
+     * 
+     * @return {@link java.lang.Integer}
+     */
+    public int executeUpdate(String befSql, Logic logic) {
+        int count = 0;
+        try {
+            count = super.executeUpdate(this.sqlWhereBuild.sqlBuild(befSql, logic), this.commit);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return count;
     }
 }

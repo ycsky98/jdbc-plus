@@ -35,13 +35,31 @@ public class SqlWhereBuild {
         sql.append(befsql);
         // 获取构建好的条件值
         Map<String, Type> valueType = logic.buildParam();
+        // 获取set条件数据
+        Map<String, Object> setValue = logic.buildSetParam();
+
         PreparedStatement preparedStatement = null;
         int size = valueType.size();
         // 如果条件不为空
         if (valueType.size() > 0) {
-            sql.append(" WHERE ");
             // 构建sql语句
             int count = 1;
+            // 如果set有数据,说明是Update操作
+            if (setValue.size() > 0) {
+                sql.append(" SET ");
+                for (Map.Entry<String, Object> entry : setValue.entrySet()) {
+                    sql.append(entry.getKey()).append("=").append("? ");// key=?
+                    // 没到底部
+                    if (!checkEnd(count, setValue.size())) {
+                        sql.append(", ");
+                    }
+                    count++;
+                }
+            }
+            // 重置
+            count = 1;
+            sql.append(" WHERE ");
+
             for (Map.Entry<String, Type> entry : valueType.entrySet()) {
                 WhereType whereType = entry.getValue().getType();
                 switch (whereType) {
@@ -79,8 +97,14 @@ public class SqlWhereBuild {
             }
             preparedStatement = this.connection.prepareStatement(sql.toString());
             count = 1;
+            // 设置预编译sql的数据
+            for (Map.Entry<String, Object> entry : setValue.entrySet()) {
+                preparedStatement.setObject(count, entry.getValue());
+                count++;
+            }
             for (Map.Entry<String, Type> entry : valueType.entrySet()) {
                 preparedStatement.setObject(count, entry.getValue().getValue());
+                count++;
             }
         } else {// 没有任何逻辑执行原sql
             preparedStatement = this.connection.prepareStatement(befsql);
@@ -157,6 +181,7 @@ public class SqlWhereBuild {
             count = 1;
             for (Map.Entry<String, Type> entry : valueType.entrySet()) {
                 preparedStatement.setObject(count, entry.getValue().getValue());
+                count++;
             }
         } else {// 没有任何逻辑执行原sql
             preparedStatement = this.connection.prepareStatement(befsql);
