@@ -18,6 +18,17 @@ jdbc-plus是一款原生插件
     busExecutor.autoCommit(true);
     busExecutor.execute("SELECT COUNT(1) FROM admin", new Logic().eq("username", "admin").end());
 
+## 如果是修改语句并且没用设置自动提交
+	HikariConfig hikariConfig = new HikariConfig();
+    SqlWhereBuild build = new SqlWhereBuild();
+    BusExecutor<Integer> busExecutor = new BusExecutor<>(hikariConfig, build);
+
+    busExecutor.execute("SELECT COUNT(1) FROM admin", new Logic().eq("username", 	"admin").end());
+
+    busExecutor.executeUpdate("UPDATE admin", new Logic().set("username", "zhangsan").set	("password", "abcde"));
+	//进行事务提交
+    busExecutor.getConnection().commit();
+
 ##感谢各位大佬支持!
 
 ## 支持原生sql查询

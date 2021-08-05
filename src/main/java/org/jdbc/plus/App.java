@@ -18,7 +18,10 @@ public class App {
         SqlWhereBuild build = new SqlWhereBuild();
         BusExecutor<Integer> busExecutor = new BusExecutor<>(hikariConfig, build);
 
-        busExecutor.autoCommit(true);
         busExecutor.execute("SELECT COUNT(1) FROM admin", new Logic().eq("username", "admin").end());
+
+        busExecutor.executeUpdate("UPDATE admin", new Logic().set("username", "zhangsan").set("password", "abcde"));
+
+        busExecutor.getConnection().commit();
     }
 }
