@@ -12,6 +12,7 @@ jdbc-plus是一款原生插件
 ## 如何完整的使用该插件
     HikariConfig hikariConfig = new HikariConfig();
     SqlWhereBuild build = new SqlWhereBuild();
+    //注明一下:该BusExecutor里面的事务维持唯一性,事务存储基类是BaseExecutor,里面将从连接池内提取一个连接
     BusExecutor<Integer> busExecutor = new BusExecutor<>(hikariConfig, build);
 
     busExecutor.autoCommit(true);
