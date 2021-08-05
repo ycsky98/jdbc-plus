@@ -13,9 +13,14 @@ import org.jdbc.plus.rules.whereType.WhereType;
 public class Logic {
 
     /**
-     * 用于装取逻辑
+     * 用于装取WHERE逻辑
      */
     protected volatile Map<String, Type> paramLogic = Collections.synchronizedMap(new LinkedHashMap<>(16));
+
+    /**
+     * 用于存储Update set值
+     */
+    protected volatile Map<String, Object> setLogic = Collections.synchronizedMap(new LinkedHashMap<>(16));
 
     /**
      * 等于
@@ -71,6 +76,18 @@ public class Logic {
     }
 
     /**
+     * Update情况下的set值操作
+     * 
+     * @param column
+     * @param value
+     * @return
+     */
+    public Logic set(String column, Object value) {
+        this.setLogic.put(column, value);
+        return this;
+    }
+
+    /**
      * 结束用语
      * 
      * @return
@@ -86,5 +103,14 @@ public class Logic {
      */
     public Map<String, Type> buildParam() {
         return this.paramLogic;
+    }
+
+    /**
+     * 返回set数据
+     * 
+     * @return
+     */
+    public Map<String, Object> buildSetParam() {
+        return this.setLogic;
     }
 }
