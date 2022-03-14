@@ -14,14 +14,19 @@ import org.jdbc.plus.rules.rule.Logic;
  */
 public class App {
     public static void main(String[] args) throws SQLException {
-        HikariConfig hikariConfig = new HikariConfig();
-        SqlWhereBuild build = new SqlWhereBuild();
-        BusExecutor<Integer> busExecutor = new BusExecutor<>(hikariConfig, build);
+        System.out.println(System.getProperty("hello"));
+        System.out.println(System.getProperty("demo"));
+        // HikariConfig hikariConfig = new HikariConfig();
 
-        busExecutor.execute("SELECT COUNT(1) FROM admin", new Logic().eq("username", "admin").end());
+        // SqlWhereBuild build = new SqlWhereBuild();
+        // BusExecutor<Integer> busExecutor = new BusExecutor<>(hikariConfig, build);
 
-        busExecutor.executeUpdate("UPDATE admin", new Logic().set("username", "zhangsan").set("password", "abcde"));
+        // busExecutor.execute("SELECT COUNT(1) FROM admin", new Logic().eq("username",
+        // "admin").end());
 
-        busExecutor.getConnection().commit();
+        // busExecutor.executeUpdate("UPDATE admin", new Logic().set("username",
+        // "zhangsan").set("password", "abcde"));
+
+        // busExecutor.getConnection().commit();
     }
 }
