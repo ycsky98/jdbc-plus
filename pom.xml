@@ -24,12 +24,14 @@
       <scope>test</scope>
     </dependency>
 
+    <!-- 连接池 -->
     <dependency>
       <groupId>com.zaxxer</groupId>
       <artifactId>HikariCP</artifactId>
       <version>3.3.1</version>
     </dependency>
 
+    <!-- mysql -->
     <dependency>
       <groupId>mysql</groupId>
       <artifactId>mysql-connector-java</artifactId>
